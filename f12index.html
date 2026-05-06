@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScholarSafe — Safe Places. Bright Futures.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2b5e;
+    --gold: #c9a227;
+    --cream: #f8f5f0;
+    --slate: #8492a6;
+    --white: #ffffff;
+    --danger: #e05252;
+    --safe: #3aaa6b;
+    --light-navy: #eef1f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(248,245,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(26,43,94,0.08);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 900;
+    color: var(--navy); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--navy); text-decoration: none; opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    background: var(--navy); color: var(--white);
+    padding: 10px 24px; border-radius: 6px;
+    font-size: 0.88rem; font-weight: 600;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,162,39,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -50px; left: 30%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(26,43,94,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-left { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--light-navy); color: var(--navy);
+    padding: 6px 16px; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 28px;
+    border: 1px solid rgba(26,43,94,0.12);
+    animation: fadeInUp 0.6s ease both;
+  }
+  .hero-badge::before { content: '🎓'; }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    animation: fadeInUp 0.6s 0.1s ease both;
+  }
+  .hero-title em {
+    font-style: normal; color: var(--gold);
+    position: relative;
+  }
+  .hero-title em::after {
+    content: '';
+    position: absolute; bottom: 4px; left: 0; right: 0; height: 3px;
+    background: var(--gold); opacity: 0.4; border-radius: 2px;
+  }
+  .hero-sub {
+    font-size: 1.05rem; line-height: 1.7; color: var(--slate);
+    max-width: 460px; margin-bottom: 40px;
+    animation: fadeInUp 0.6s 0.2s ease both;
+  }
+  .hero-buttons {
+    display: flex; gap: 16px;
+    animation: fadeInUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--navy); color: var(--white);
+    padding: 14px 32px; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+    border: 2px solid var(--navy);
+  }
+  .btn-primary:hover { background: var(--gold); border-color: var(--gold); }
+  .btn-secondary {
+    background: transparent; color: var(--navy);
+    padding: 14px 32px; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+    border: 2px solid rgba(26,43,94,0.2);
+  }
+  .btn-secondary:hover { border-color: var(--navy); }
+
+  /* HERO CARD */
+  .hero-right {
+    position: relative; z-index: 1;
+    display: flex; justify-content: center; align-items: center;
+    animation: fadeInRight 0.8s 0.2s ease both;
+  }
+  .listing-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px;
+    width: 340px;
+    box-shadow: 0 20px 60px rgba(26,43,94,0.12), 0 4px 12px rgba(26,43,94,0.06);
+    position: relative;
+  }
+  .listing-card-img {
+    width: 100%; height: 160px;
+    background: linear-gradient(135deg, #2d4a8a 0%, #1a2b5e 100%);
+    border-radius: 12px; margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; position: relative; overflow: hidden;
+  }
+  .listing-card-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.4));
+  }
+  .safety-badge-card {
+    position: absolute; top: 12px; right: 12px; z-index: 1;
+    background: var(--safe); color: white;
+    padding: 4px 10px; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 700;
+  }
+  .listing-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 6px;
+  }
+  .listing-meta {
+    display: flex; gap: 16px; margin-bottom: 14px;
+  }
+  .listing-meta span {
+    font-size: 0.8rem; color: var(--slate); font-weight: 500;
+  }
+  .listing-meta strong { color: var(--navy); }
+  .safety-row {
+    display: flex; align-items: center; gap: 10px;
+    background: #f0faf5; border-radius: 8px; padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+  .safety-score {
+    font-size: 1.5rem; font-weight: 900; color: var(--safe);
+  }
+  .safety-label { font-size: 0.8rem; color: var(--slate); }
+  .safety-label strong { display: block; color: var(--navy); font-size: 0.85rem; }
+  .review-snippet {
+    font-size: 0.8rem; color: var(--slate); font-style: italic;
+    border-left: 3px solid var(--gold); padding-left: 10px; margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .match-chip {
+    position: absolute; top: -16px; left: 24px;
+    background: var(--gold); color: var(--white);
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 700;
+    box-shadow: 0 4px 12px rgba(201,162,39,0.4);
+  }
+  .card-btn {
+    width: 100%; background: var(--navy); color: white;
+    border: none; border-radius: 8px; padding: 12px;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    transition: background 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .card-btn:hover { background: var(--gold); }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--navy);
+    padding: 32px 60px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 20px; text-align: center;
+  }
+  .stat-item { color: var(--white); }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 900; color: var(--gold);
+    display: block;
+  }
+  .stat-label { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; }
+
+  /* PROBLEM */
+  .problem-section {
+    padding: 100px 60px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .section-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 900; line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .section-body { font-size: 1rem; line-height: 1.75; color: var(--slate); }
+  .stat-cards { display: flex; flex-direction: column; gap: 16px; }
+  .stat-card {
+    background: var(--white); border-radius: 12px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 20px;
+    box-shadow: 0 4px 16px rgba(26,43,94,0.07);
+    border-left: 4px solid var(--danger);
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateX(4px); }
+  .stat-card.safe-card { border-left-color: var(--safe); }
+  .stat-card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 900; color: var(--danger);
+    white-space: nowrap; min-width: 80px;
+  }
+  .safe-card .stat-card-num { color: var(--safe); }
+  .stat-card-text { font-size: 0.9rem; line-height: 1.5; color: var(--slate); }
+  .stat-card-text strong { display: block; color: var(--navy); margin-bottom: 2px; }
+
+  /* FEATURES */
+  .features-section {
+    background: var(--light-navy);
+    padding: 100px 60px;
+  }
+  .features-header { text-align: center; margin-bottom: 60px; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .feature-card {
+    background: var(--white); border-radius: 16px; padding: 32px;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .feature-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(26,43,94,0.12); }
+  .feature-card:hover::before { transform: scaleX(1); }
+  .feature-icon {
+    font-size: 2rem; margin-bottom: 16px; display: block;
+  }
+  .feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 10px;
+  }
+  .feature-desc { font-size: 0.9rem; line-height: 1.65; color: var(--slate); }
+
+  /* HOW IT WORKS */
+  .how-section { padding: 100px 60px; }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px; margin-top: 60px; position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute; top: 30px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--navy));
+    z-index: 0;
+  }
+  .step {
+    text-align: center; position: relative; z-index: 1;
+  }
+  .step-num {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--navy); color: var(--white);
+    font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; border: 4px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--navy);
+  }
+  .step-title { font-weight: 700; margin-bottom: 8px; }
+  .step-desc { font-size: 0.85rem; color: var(--slate); line-height: 1.6; }
+
+  /* SAFETY MAP */
+  .safety-section {
+    padding: 100px 60px;
+    background: var(--navy);
+    color: var(--white);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .safety-section .section-label { color: var(--gold); }
+  .safety-section .section-title { color: var(--white); }
+  .safety-section .section-body { color: rgba(255,255,255,0.65); }
+  .map-mockup {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 28px;
+    position: relative; overflow: hidden;
+  }
+  .map-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .map-cell {
+    border-radius: 10px; padding: 16px; text-align: center;
+    font-size: 0.8rem; font-weight: 600;
+  }
+  .map-cell.high { background: rgba(58,170,107,0.2); color: #5dd4a0; border: 1px solid rgba(58,170,107,0.3); }
+  .map-cell.med { background: rgba(201,162,39,0.2); color: #e8c547; border: 1px solid rgba(201,162,39,0.3); }
+  .map-cell.low { background: rgba(224,82,82,0.2); color: #f08080; border: 1px solid rgba(224,82,82,0.3); }
+  .map-cell .cell-score { font-size: 1.4rem; font-weight: 900; font-family: 'Playfair Display', serif; display: block; margin-bottom: 4px; }
+  .map-legend {
+    display: flex; gap: 16px; margin-top: 16px; justify-content: center;
+    font-size: 0.75rem;
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { padding: 100px 60px; background: var(--cream); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+  .review-card {
+    background: var(--white); border-radius: 16px; padding: 28px;
+    box-shadow: 0 4px 16px rgba(26,43,94,0.07);
+    transition: transform 0.2s;
+  }
+  .review-card:hover { transform: translateY(-4px); }
+  .review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 14px; }
+  .review-text { font-size: 0.9rem; line-height: 1.7; color: var(--slate); margin-bottom: 18px; font-style: italic; }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700; color: white;
+    font-family: 'Playfair Display', serif;
+  }
+  .reviewer-info { font-size: 0.85rem; }
+  .reviewer-name { font-weight: 700; color: var(--navy); }
+  .reviewer-school { color: var(--slate); font-size: 0.8rem; }
+
+  /* MONETIZATION */
+  .money-section {
+    padding: 100px 60px;
+    background: var(--light-navy);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .revenue-streams { display: flex; flex-direction: column; gap: 16px; }
+  .revenue-item {
+    background: var(--white); border-radius: 12px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 16px;
+    box-shadow: 0 4px 12px rgba(26,43,94,0.06);
+  }
+  .revenue-icon { font-size: 1.5rem; min-width: 40px; text-align: center; }
+  .revenue-title { font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .revenue-desc { font-size: 0.85rem; color: var(--slate); }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 60px; text-align: center;
+    background: var(--navy); color: var(--white);
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(201,162,39,0.15) 0%, transparent 70%);
+  }
+  .cta-section .section-title { color: var(--white); font-size: 3rem; }
+  .cta-sub { color: rgba(255,255,255,0.65); font-size: 1.1rem; margin: 20px auto 40px; max-width: 500px; line-height: 1.7; }
+  .cta-buttons { display: flex; gap: 16px; justify-content: center; }
+  .btn-gold {
+    background: var(--gold); color: var(--white);
+    padding: 16px 40px; border-radius: 8px;
+    font-size: 1rem; font-weight: 700;
+    text-decoration: none; transition: all 0.2s;
+    border: 2px solid var(--gold);
+  }
+  .btn-gold:hover { background: transparent; color: var(--gold); }
+  .btn-outline-white {
+    background: transparent; color: var(--white);
+    padding: 16px 40px; border-radius: 8px;
+    font-size: 1rem; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+  .btn-outline-white:hover { border-color: white; }
+
+  /* FOOTER */
+  footer {
+    background: #0f1a3c; color: rgba(255,255,255,0.5);
+    padding: 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.85rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 900; color: white;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-tagline { font-size: 0.8rem; opacity: 0.5; margin-top: 4px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .animate-in {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .animate-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+    .hero-right { display: none; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 32px 24px; }
+    .problem-section, .safety-section, .money-section { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .features-section, .how-section, .testimonials-section, .cta-section { padding: 60px 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: repeat(2,1fr); }
+    .steps-grid::before { display: none; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Scholar<span>Safe</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#safety">Safety</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#landlords">For Landlords</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Sign Up Free</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">By Students, For Students</div>
+    <h1 class="hero-title">
+      Find your <em>place</em>.<br>
+      Find your <em>people</em>.
+    </h1>
+    <p class="hero-sub">
+      The only student housing platform that combines verified listings, real student reviews, safety data, and roommate matching — all in one place.
+    </p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary">Find Housing</a>
+      <a href="#" class="btn-secondary">Find Roommates</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="listing-card">
+      <div class="match-chip">✨ 92% Match</div>
+      <div class="listing-card-img">
+        🏡
+        <span class="safety-badge-card">Safe Area</span>
+      </div>
+      <div class="listing-name">Modern 3BR Apartment</div>
+      <div class="listing-meta">
+        <span><strong>$725</strong> / person</span>
+        <span>0.4 mi from campus</span>
+      </div>
+      <div class="safety-row">
+        <div class="safety-score">91</div>
+        <div class="safety-label">
+          <strong>Safety Score</strong>
+          Low crime · Well-lit · Secure entry
+        </div>
+      </div>
+      <div class="review-snippet">
+        "Great location and super quiet at night. Landlord responds within hours." — Current Tenant
+      </div>
+      <button class="card-btn">View Listing →</button>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">100%</span>
+    <div class="stat-label">Verified Students</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">5,000+</span>
+    <div class="stat-label">Active Listings</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">10,000+</span>
+    <div class="stat-label">Successful Matches</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">4.7/5</span>
+    <div class="stat-label">Avg. Student Rating</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem-section" id="problem">
+  <div class="animate-in">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Safety is never part of the decision.</h2>
+    <p class="section-body">
+      Most students pick housing based on price or proximity. Safety data is scattered, reviews are unreliable, and there's no place designed to put students first. The result? Students end up in high-risk areas they never knew to avoid.
+    </p>
+  </div>
+  <div class="stat-cards animate-in">
+    <div class="stat-card">
+      <div class="stat-card-num">17+</div>
+      <div class="stat-card-text"><strong>Mass shootings at U.S. colleges since 1966</strong>Causing at least 117 deaths and hundreds of injuries</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-num">380+</div>
+      <div class="stat-card-text"><strong>Gun-related incidents on campuses since 2013</strong>In environments where students make housing decisions daily</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-num">60.9%</div>
+      <div class="stat-card-text"><strong>Of campus crimes are disciplinary referrals</strong>Underreported and invisible to students searching for housing</div>
+    </div>
+    <div class="stat-card safe-card">
+      <div class="stat-card-num">1 app</div>
+      <div class="stat-card-text"><strong>ScholarSafe — all you need</strong>Safety + listings + reviews + roommates, finally together</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="features-header animate-in">
+    <div class="section-label">Key Features</div>
+    <h2 class="section-title">Everything students actually need.</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card animate-in">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-title">Verified Listings</div>
+      <p class="feature-desc">Every listing is tied to a real address and verified landlord. No ghost listings, no scams — just real housing for real students.</p>
+    </div>
+    <div class="feature-card animate-in">
+      <span class="feature-icon">⭐</span>
+      <div class="feature-title">Student Reviews</div>
+      <p class="feature-desc">Honest feedback on safety, noise, landlord responsiveness, and more — written only by verified .edu students who actually lived there.</p>
+    </div>
+    <div class="feature-card animate-in">
+      <span class="feature-icon">🛡️</span>
+      <div class="feature-title">Safety Index</div>
+      <p class="feature-desc">Day vs. night safety scores, crime heatmaps, and proximity to campus police — so you know exactly what you're walking into.</p>
+    </div>
+    <div class="feature-card animate-in">
+      <span class="feature-icon">🤝</span>
+      <div class="feature-title">Smart Roommate Matching</div>
+      <p class="feature-desc">Compatibility scores based on lifestyle, schedule, budget, and habits. Find your people, not just a warm body to split rent with.</p>
+    </div>
+    <div class="feature-card animate-in">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Student Fit Score</div>
+      <p class="feature-desc">Every listing gets a personalized score based on your budget, distance preference, and lifestyle — no more guesswork.</p>
+    </div>
+    <div class="feature-card animate-in">
+      <span class="feature-icon">🏠</span>
+      <div class="feature-title">Landlord Profiles</div>
+      <p class="feature-desc">Landlords are rated on responsiveness, lease flexibility, and maintenance. Students trust landlords; landlords find reliable tenants.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="features-header animate-in">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From search to signed lease, simplified.</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step animate-in">
+      <div class="step-num">1</div>
+      <div class="step-title">Create Your Profile</div>
+      <p class="step-desc">Sign up with your .edu email. Tell us your budget, campus, lifestyle, and priorities.</p>
+    </div>
+    <div class="step animate-in">
+      <div class="step-num">2</div>
+      <div class="step-title">Browse Safe Listings</div>
+      <p class="step-desc">Filter by safety score, price-per-person, distance, and student reviews — all in one view.</p>
+    </div>
+    <div class="step animate-in">
+      <div class="step-num">3</div>
+      <div class="step-title">Match & Connect</div>
+      <p class="step-desc">Get matched with compatible roommates and message landlords directly through the platform.</p>
+    </div>
+    <div class="step animate-in">
+      <div class="step-num">4</div>
+      <div class="step-title">Move In Confidently</div>
+      <p class="step-desc">Sign your lease knowing you made an informed, safe, student-first decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section class="safety-section" id="safety">
+  <div>
+    <div class="section-label">Neighborhood Safety Index</div>
+    <h2 class="section-title">Know your neighborhood before you move in.</h2>
+    <p class="section-body" style="margin-bottom: 28px;">
+      ScholarSafe aggregates public safety data, student-reported incidents, and community feedback into a clear, real-time safety score for every neighborhood near campus.
+    </p>
+    <ul style="list-style:none; display:flex; flex-direction:column; gap:12px;">
+      <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.75);font-size:0.9rem;"><span style="color:var(--gold)">✓</span> Day & night safety ratings</li>
+      <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.75);font-size:0.9rem;"><span style="color:var(--gold)">✓</span> Crime trend data updated monthly</li>
+      <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.75);font-size:0.9rem;"><span style="color:var(--gold)">✓</span> Distance to campus security & police</li>
+      <li style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.75);font-size:0.9rem;"><span style="color:var(--gold)">✓</span> Lighting & walkability scores</li>
+    </ul>
+  </div>
+  <div class="map-mockup animate-in">
+    <div style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-bottom:16px;letter-spacing:0.08em;text-transform:uppercase;">Safety Map — Near Campus</div>
+    <div class="map-grid">
+      <div class="map-cell high"><span class="cell-score">94</span>Oak District<br><small>High Safety</small></div>
+      <div class="map-cell high"><span class="cell-score">88</span>Scholar Row<br><small>High Safety</small></div>
+      <div class="map-cell med"><span class="cell-score">72</span>West End<br><small>Moderate</small></div>
+      <div class="map-cell med"><span class="cell-score">68</span>Park Ave<br><small>Moderate</small></div>
+      <div class="map-cell low"><span class="cell-score">41</span>Mill St<br><small>Lower Safety</small></div>
+      <div class="map-cell high"><span class="cell-score">91</span>Campus Edge<br><small>High Safety</small></div>
+    </div>
+    <div class="map-legend">
+      <span><span class="legend-dot" style="background:#3aaa6b"></span>High (80+)</span>
+      <span><span class="legend-dot" style="background:#c9a227"></span>Moderate (60–79)</span>
+      <span><span class="legend-dot" style="background:#e05252"></span>Lower (&lt;60)</span>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="reviews">
+  <div class="features-header animate-in">
+    <div class="section-label">Student Reviews</div>
+    <h2 class="section-title">Real students. Real experiences.</h2>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card animate-in">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"ScholarSafe helped me find an apartment I actually feel safe in. The safety scores and student reviews made all the difference — I knew exactly what I was getting into."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">M</div>
+        <div class="reviewer-info">
+          <div class="reviewer-name">Maya R.</div>
+          <div class="reviewer-school">SCU · Junior · Business</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card animate-in">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"I found my roommate through the matching feature and we're genuinely compatible. The 85% match score was accurate — we have the same sleep schedule, study habits, everything."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">J</div>
+        <div class="reviewer-info">
+          <div class="reviewer-name">Jordan K.</div>
+          <div class="reviewer-school">SJSU · Sophomore · CS</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card animate-in">
+      <div class="review-stars">★★★★☆</div>
+      <p class="review-text">"The landlord ratings saved me. I almost signed with someone rated 2 stars for responsiveness. Ended up with a 5-star landlord who responds same-day. Total game changer."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">A</div>
+        <div class="reviewer-info">
+          <div class="reviewer-name">Aisha T.</div>
+          <div class="reviewer-school">Stanford · Grad Student · Law</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONETIZATION / FOR LANDLORDS -->
+<section class="money-section" id="landlords">
+  <div class="animate-in">
+    <div class="section-label">How ScholarSafe Grows</div>
+    <h2 class="section-title">Built to last. Designed to scale.</h2>
+    <p class="section-body">
+      ScholarSafe sustains itself through multiple revenue streams — keeping the platform free and accessible to students while creating real value for landlords, businesses, and universities.
+    </p>
+  </div>
+  <div class="revenue-streams">
+    <div class="revenue-item animate-in">
+      <div class="revenue-icon">🏘️</div>
+      <div>
+        <div class="revenue-title">Student Commission (10%)</div>
+        <div class="revenue-desc">A 10% monthly fee from students who secure housing — only paid once they've moved in successfully.</div>
+      </div>
+    </div>
+    <div class="revenue-item animate-in">
+      <div class="revenue-icon">📋</div>
+      <div>
+        <div class="revenue-title">Featured Landlord Listings</div>
+        <div class="revenue-desc">Landlords pay for premium placement, reaching verified students directly on ScholarSafe.</div>
+      </div>
+    </div>
+    <div class="revenue-item animate-in">
+      <div class="revenue-icon">🏫</div>
+      <div>
+        <div class="revenue-title">University Partnerships</div>
+        <div class="revenue-desc">Licensed data and tools sold to universities to help them support their student housing programs.</div>
+      </div>
+    </div>
+    <div class="revenue-item animate-in">
+      <div class="revenue-icon">📢</div>
+      <div>
+        <div class="revenue-title">Local Business Advertising</div>
+        <div class="revenue-desc">Businesses reach students with relevant offers based on where they live — hyper-targeted and meaningful.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label" style="color:var(--gold);">Get Started Today</div>
+  <h2 class="section-title">Your next home should feel like one.</h2>
+  <p class="cta-sub">Join thousands of students making smarter, safer housing decisions with ScholarSafe.</p>
+  <div class="cta-buttons">
+    <a href="#" class="btn-gold">Find Housing Near Me</a>
+    <a href="#" class="btn-outline-white">For Landlords →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Scholar<span>Safe</span></div>
+    <div class="footer-tagline">Safe Places. Bright Futures.</div>
+  </div>
+  <div>Built by The Big Y</div>
+  <div>© 2025 ScholarSafe. All rights reserved.</div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
