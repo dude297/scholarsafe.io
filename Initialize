@@ -1,8 +1,0 @@
-unzip scholarsafe.zip -d scholarsafe
-cd scholarsafe
-npm install
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin https://github.com/yourname/scholarsafe.git
-git push -u origin main
